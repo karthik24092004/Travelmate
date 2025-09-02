@@ -14,7 +14,246 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      expense_participants: {
+        Row: {
+          expense_id: string
+          id: string
+          share_amount: number | null
+          user_id: string
+        }
+        Insert: {
+          expense_id: string
+          id?: string
+          share_amount?: number | null
+          user_id: string
+        }
+        Update: {
+          expense_id?: string
+          id?: string
+          share_amount?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expense_participants_expense_id_fkey"
+            columns: ["expense_id"]
+            isOneToOne: false
+            referencedRelation: "expenses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      expenses: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string | null
+          description: string | null
+          expense_date: string
+          id: string
+          itinerary_item_id: string | null
+          paid_by: string
+          title: string
+          trip_id: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          expense_date?: string
+          id?: string
+          itinerary_item_id?: string | null
+          paid_by: string
+          title: string
+          trip_id: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string | null
+          description?: string | null
+          expense_date?: string
+          id?: string
+          itinerary_item_id?: string | null
+          paid_by?: string
+          title?: string
+          trip_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expenses_itinerary_item_id_fkey"
+            columns: ["itinerary_item_id"]
+            isOneToOne: false
+            referencedRelation: "itinerary_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "expenses_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      itinerary_items: {
+        Row: {
+          activity_date: string
+          created_at: string
+          created_by: string
+          description: string | null
+          end_time: string | null
+          estimated_cost: number | null
+          id: string
+          location: string | null
+          start_time: string | null
+          title: string
+          trip_id: string
+          updated_at: string
+        }
+        Insert: {
+          activity_date: string
+          created_at?: string
+          created_by: string
+          description?: string | null
+          end_time?: string | null
+          estimated_cost?: number | null
+          id?: string
+          location?: string | null
+          start_time?: string | null
+          title: string
+          trip_id: string
+          updated_at?: string
+        }
+        Update: {
+          activity_date?: string
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          end_time?: string | null
+          estimated_cost?: number | null
+          id?: string
+          location?: string | null
+          start_time?: string | null
+          title?: string
+          trip_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "itinerary_items_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      trip_members: {
+        Row: {
+          id: string
+          joined_at: string
+          role: string | null
+          trip_id: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          joined_at?: string
+          role?: string | null
+          trip_id: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          joined_at?: string
+          role?: string | null
+          trip_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trip_members_trip_id_fkey"
+            columns: ["trip_id"]
+            isOneToOne: false
+            referencedRelation: "trips"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      trips: {
+        Row: {
+          created_at: string
+          created_by: string
+          description: string | null
+          destination: string | null
+          end_date: string | null
+          id: string
+          start_date: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          description?: string | null
+          destination?: string | null
+          end_date?: string | null
+          id?: string
+          start_date?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          description?: string | null
+          destination?: string | null
+          end_date?: string | null
+          id?: string
+          start_date?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
