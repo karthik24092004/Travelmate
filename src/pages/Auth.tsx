@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
 import { Plane } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -41,6 +42,31 @@ const Auth = () => {
       return;
     }
 
+    // Check if username is available before signing up
+    try {
+      const { data: existing, error: checkError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('username', username)
+        .maybeSingle();
+
+      if (checkError) {
+        console.error('Username check error:', checkError);
+      }
+
+      if (existing) {
+        toast({
+          title: 'Username taken',
+          description: 'Please choose a different username.',
+          variant: 'destructive',
+        });
+        setIsLoading(false);
+        return;
+      }
+    } catch (err) {
+      console.error('Username availability check failed:', err);
+    }
+
     const { error } = await signUp(email, password, {
       full_name: fullName,
       username: username
@@ -49,7 +75,9 @@ const Auth = () => {
     if (error) {
       toast({
         title: 'Sign up failed',
-        description: error.message,
+        description: error.message?.includes('Database error')
+          ? 'Username might be taken. Try another.'
+          : error.message,
         variant: 'destructive',
       });
     } else {
